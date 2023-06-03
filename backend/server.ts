@@ -2,6 +2,8 @@ import express, { Application } from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
+import TodoRoutes from "./routes/todo";
+
 
 class Server {
     private app: Application;
@@ -22,6 +24,14 @@ class Server {
         }
     }
 
+    private initMiddlewares() {
+        this.app.use(express.json());
+    }
+
+    private initRoutes() {
+        this.app.use("/api", TodoRoutes.router);
+    }
+
     private listen() {
         this.app.listen(3000, () => {
             console.log("server started on port 3000");
@@ -29,6 +39,8 @@ class Server {
     }
 
     public init() {
+        this.initMiddlewares();
+        this.initRoutes();
         this.connect();
         this.listen();
     }
